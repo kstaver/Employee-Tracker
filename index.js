@@ -7,7 +7,15 @@ require('console.table');
 
 // Prompts for user choice
 const promptForInfo = {
-
+    viewAllEmployees: "View all employees",
+    viewByDepartment: "View all employees by department",
+    viewByManager: "View all employees under a specific manager",
+    addEmployee: "Add an employee",
+    removeEmployee: "Remove an employee",
+    updateRole: "Update employee role",
+    updateEmployeeRole: "Update an employee's manager",
+    viewAllRoles: "View all roles",
+    exit: "Exit"
 };
 
 // Create a connection to the sql database 
@@ -20,6 +28,7 @@ const connection = mysql.createConnection({
 // server
 connection.connect(err => {
     if(err) throw err;
+    prompt();
 });
 
 // Prompt for user input
@@ -68,12 +77,23 @@ function askForID(){
 }
 
 // Update an employee's role
-async function updateRmployeeRole(){
+async function updateEmployeeRole(){
 
 }
 
 // Prompt the user for a new employees name
 // that they want to add to the database
 function askForName(){
-
+ return ([
+     {
+         name: "first",
+         type: "input",
+         message: "Enter the first name: "
+     },
+     {
+         name: "last",
+         type: "input",
+         message: "Enter the last name: "
+     }
+ ]);
 }

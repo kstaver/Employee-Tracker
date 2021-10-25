@@ -27,11 +27,11 @@ CREATE TABLE employee(
 USE employees;
 INSERT INTO department
     (name)
-    VALUES
-        ('Engineering'),
-        ('Quality Assurance'),
-        ('Network Engineering'),
-        ('Executive');
+VALUES
+    ('Engineering'),
+    ('Quality Assurance'),
+    ('Network Engineering'),
+    ('Executive');
 INSERT INTO role
     (title, salary, department_id)
 VALUES

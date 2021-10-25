@@ -21,7 +21,13 @@ const promptForInfo = {
 // Create a connection to the sql database 
 // that we are using in this application
 const connection = mysql.createConnection({
+    host: 'localhost',
 
+    user: 'root',
+
+    password: "crazycatlady",
+
+    databse: 'employees'
 });
 
 // Tests the connection between index.js and sql
@@ -33,7 +39,18 @@ connection.connect(err => {
 
 // Prompt for user input
 function prompt(){
-
+    inquirer.prompt({
+        name: 'action',
+        type: 'list',
+        message: "Wleomce to the Employees Database. Please choose from the following options.",
+        choices[
+            promptForInfo.viewAllEmployees,
+            promptForInfo.viewByDepartment,
+            promptForInfo.viewByManager,
+            promptForInfo.viewAllRoles,
+            promptForInfo.addEmployee,
+        ]
+    });
 }
 
 // View all employees option
@@ -82,7 +99,8 @@ async function updateEmployeeRole(){
 }
 
 // Prompt the user for a new employees name
-// that they want to add to the database
+// that they want to search the database for
+// that specified employee
 function askForName(){
  return ([
      {

@@ -311,6 +311,12 @@ async function updateEmployeeRole(){
     });
 }
 
+
+// Update the employee's Manager
+function updateEmployeeManager(){
+
+}
+
 // Prompt the user for a new employees name
 // that they want to search the database for
 // that specified employee

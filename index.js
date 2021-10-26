@@ -227,8 +227,8 @@ function remove(input){
     };
     inquirer.prompt([
         {
-            name: 'action',
-            type: 'list',
+            name: "action",
+            type: "list",
             message: "An employee ID is required to continue forward. Do you know the employee's ID number?",
             chocies: [promptQ.yes, promptQ.no]
         }
@@ -265,10 +265,16 @@ async function removeEmployee(){
     prompt();
 };
 
-// Prompt the user to enter an employees id
+// Prompt the user to enter an employees id number
 function askForID(){
-
-}
+    return([
+        {
+            name: "name",
+            type: "input",
+            message: "What is the employee's ID number? "
+        }
+    ]);
+};
 
 // Update an employee's role
 async function updateEmployeeRole(){

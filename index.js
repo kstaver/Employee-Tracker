@@ -246,8 +246,24 @@ function remove(input){
 
 // Remove an employee from the database
 async function removeEmployee(){
-
-}
+    const answer = await inquirer.prompt([
+        {
+            name: "first",
+            type: "input",
+            message: "Enter the ID of the employee that you want to remove: "
+        }
+    ]);
+    connection.query('DELETE FROM employee WHERE ?',
+        {
+            id: answer.first
+        },
+        function (err){
+            if (err) throw err;
+        }
+    )
+    console.log('The employee has been removed from the database.');
+    prompt();
+};
 
 // Prompt the user to enter an employees id
 function askForID(){

@@ -218,7 +218,8 @@ async function addEmployee(){
     });
 }
 
-// Remove an employee
+// Ask if user wants to remove an employee, update a role, or view all employees
+// If yes to any of those, call the appropriate functions
 function remove(input){
     const promptQ = {
         yes: "yes",

@@ -47,7 +47,7 @@ function prompt(){
             promptForInfo.viewAllRoles,
             promptForInfo.addEmployee,
             promptForInfo.removeEmployee,
-            promptForInfo.updateRole,
+            promptForInfo.updateEmployeeRole,
             promptForInfo.exit
         ]
     })
@@ -72,8 +72,11 @@ function prompt(){
             case promptForInfo.removeEmployee:
                 removeEmployee();
                 break;
-            case promptForInfo.updateRole:
-                updateRole();
+            case promptForInfo.updateEmployeeRole:
+                updateEmployeeRole();
+                break;
+            case promptForInfo.updateEmployeeManager:
+                updateEmployeeManager();
                 break;
             case promptForInfo.exit:
                 connection.end();
@@ -237,7 +240,7 @@ function remove(input){
         if (input === 'delete' && answer.action === "yes"){
             removeEmployee();
         }else if(input === 'role' && answer.action === "yes"){
-            updateRole();
+            updateEmployeeRole();
         }else{
             viewAllEmployees();
         }

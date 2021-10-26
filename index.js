@@ -48,6 +48,7 @@ function prompt(){
             promptForInfo.addEmployee,
             promptForInfo.removeEmployee,
             promptForInfo.updateEmployeeRole,
+            promptForInfo.updateEmployeeManager,
             promptForInfo.exit
         ]
     })

@@ -90,7 +90,7 @@ function viewAllEmployees(){
     LEFT JOIN employee manager on manager.id = employee.manager_id
     INNER JOIN role ON (role.id = employee.role_id)
     INNER JOIN department ON (department.id = role.department_id)
-    ORDER BY employee.id;`
+    ORDER BY employee.id;`;
     connection.query(query, (err, res) => {
         if(err) throw err;
         console.log('\n');
@@ -107,7 +107,7 @@ function viewByDepartment(){
     FROM employee
     LEFT JOIN role ON (role.id = employee.role.id)
     LEFT JOIN department ON (department.id = role.department_id)
-    ORDER BY department.name;`
+    ORDER BY department.name;`;
     connection.query(query, (err, res) => {
         if(err) throw err;
         console.log('\n');
@@ -155,7 +155,7 @@ function viewAllRoles(){
 // Add an employee to the database
 async function addEmployee(){
     const addName = await inquirer.prompt(askForName());
-    connection.query('SELECT role.id, role.title FROM role ORDER BY role.id;', async (err, res) => {
+    connection.query(`SELECT role.id, role.title FROM role ORDER BY role.id;`, async (err, res) => {
         if (err) throw err;
         const {role} = await inquirer.prompt([
             {
@@ -172,7 +172,7 @@ async function addEmployee(){
                 continue;
             }
         }
-        connection.query('SELECT * FROM employee', async (err, res) => {
+        connection.query(`SELECT * FROM employee`, async (err, res) => {
             if (err) throw err;
             let choices = res.map(res => `${res.first_name} ${res.last_name}`);
             choices.push('none');
@@ -202,7 +202,7 @@ async function addEmployee(){
             }
             console.log('Employee has been added. Please view all employee to verify...');
             connection.query(
-                'INSERT INTO employee SET ?',
+                `INSERT INTO employee SET ?`,
                 {
                     first_name: addName.first,
                     last_name: addName.last,
@@ -253,7 +253,7 @@ async function removeEmployee(){
             message: "Enter the ID of the employee that you want to remove: "
         }
     ]);
-    connection.query('DELETE FROM employee WHERE ?',
+    connection.query(`DELETE FROM employee WHERE ?`,
         {
             id: answer.first
         },
@@ -278,23 +278,49 @@ function askForID(){
 
 // Update an employee's role
 async function updateEmployeeRole(){
+    const employeeId = await inquirer.prompt(askForID());
 
+    connection.query(`SELECT role.id, role.title FROM role ORDER BY role.id;`, async (err, res) => {
+        if (err) throw err;
+        const { role } = await inquirer.prompt([
+            {
+                name: 'role',
+                type: 'list',
+                choices: () => res.map(res => res.title),
+                message: "What is the new employee's role? "
+            }
+        ]);
+        let roleId;
+        for (const row of res) {
+            if (row.title === role){
+                roleId = row.id;
+                continue;
+            }
+        }
+        connection.query(`UPDATE employee
+        SET role_id = ${roleId}
+        WHERE employee.id = ${employeeId.name}`, async (err, res) => {
+            if (err) throw (err);
+            console.log('Role has been updated!')
+            prompt();
+        });
+    });
 }
 
 // Prompt the user for a new employees name
 // that they want to search the database for
 // that specified employee
 function askForName(){
- return ([
-     {
-         name: "first",
-         type: "input",
-         message: "Enter the first name: "
-     },
-     {
-         name: "last",
-         type: "input",
-         message: "Enter the last name: "
-     }
- ]);
+    return ([
+        {
+            name: "first",
+            type: "input",
+            message: "Enter the first name: "
+        },
+        {
+            name: "last",
+            type: "input",
+            message: "Enter the last name: "
+        }
+    ]);
 }

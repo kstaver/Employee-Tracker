@@ -218,9 +218,29 @@ async function addEmployee(){
     });
 }
 
-// Remove 
+// Remove
 function remove(input){
-
+    const promptQ = {
+        yes: "yes",
+        no: "No I don't (view all employees on the main option)"
+    };
+    inquirer.prompt([
+        {
+            name: 'action',
+            type: 'list',
+            message: "An employee ID is required to continue forward. Do you know the employee's ID number?",
+            chocies: [promptQ.yes, promptQ.no]
+        }
+    ])
+    .then(answer => {
+        if (input === 'delete' && answer.action === "yes"){
+            removeEmployee();
+        }else if(input === 'role' && answer.action === "yes"){
+            updateRole();
+        }else{
+            viewAllEmployees();
+        }
+    });
 };
 
 // Remove an employee from the database

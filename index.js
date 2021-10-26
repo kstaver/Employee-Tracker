@@ -218,7 +218,7 @@ async function addEmployee(){
     });
 }
 
-// Remove
+// Remove an employee
 function remove(input){
     const promptQ = {
         yes: "yes",

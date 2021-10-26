@@ -12,8 +12,8 @@ const promptForInfo = {
     viewByManager: "View all employees under a specific manager",
     addEmployee: "Add an employee",
     removeEmployee: "Remove an employee",
-    updateRole: "Update employee role",
-    updateEmployeeRole: "Update an employee's manager",
+    updateEmployeeRole: "Update employee role",
+    updateEmployeeManager: "Update an employee's manager",
     viewAllRoles: "View all roles",
     exit: "Exit"
 };

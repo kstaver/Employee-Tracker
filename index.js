@@ -22,11 +22,8 @@ const promptForInfo = {
 // that we are using in this application
 const connection = mysql.createConnection({
     host: 'localhost',
-
     user: 'root',
-
     password: "crazycatlady",
-
     databse: 'employees'
 });
 
@@ -42,14 +39,46 @@ function prompt(){
     inquirer.prompt({
         name: 'action',
         type: 'list',
-        message: "Wleomce to the Employees Database. Please choose from the following options.",
-        choices[
+        message: "Welcome to the Employees Database. Please choose from the following options.",
+        choices: [
             promptForInfo.viewAllEmployees,
             promptForInfo.viewByDepartment,
             promptForInfo.viewByManager,
             promptForInfo.viewAllRoles,
             promptForInfo.addEmployee,
+            promptForInfo.removeEmployee,
+            promptForInfo.updateRole,
+            promptForInfo.exit
         ]
+    })
+    .then(answer =>{
+        console.log('answer', answer);
+        switch(answer.action){
+            case promptForInfo.viewAllEmployees:
+                viewAllEmployees();
+                break;
+            case promptForInfo.viewByDepartment:
+                viewByDepartment();
+                break;
+            case promptForInfo.viewByManager:
+                viewByManager();
+                break;
+            case promptForInfo.viewAllRoles:
+                viewAllRoles();
+                break;
+            case promptForInfo.addEmployee:
+                addEmployee();
+                break;
+            case promptForInfo.removeEmployee:
+                removeEmployee();
+                break;
+            case promptForInfo.updateRole:
+                updateRole();
+                break;
+            case promptForInfo.exit:
+                connection.end();
+                break;
+        }
     });
 }
 

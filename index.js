@@ -15,6 +15,8 @@ const promptForInfo = {
     updateEmployeeRole: "Update employee role",
     updateEmployeeManager: "Update an employee's manager",
     viewAllRoles: "View all roles",
+    addRole: "Add a role",
+    addDepartment: "Add a department",
     exit: "Exit"
 };
 
@@ -49,6 +51,8 @@ function prompt(){
             promptForInfo.removeEmployee,
             promptForInfo.updateEmployeeRole,
             promptForInfo.updateEmployeeManager,
+            promptForInfo.addRole,
+            promptForInfo.addDepartment,
             promptForInfo.exit
         ]
     })
@@ -78,6 +82,12 @@ function prompt(){
                 break;
             case promptForInfo.updateEmployeeManager:
                 updateEmployeeManager();
+                break;
+            case promptForInfo.addRole:
+                addRole();
+                break;
+            case promptForInfo.addDepartment:
+                addDepartment();
                 break;
             case promptForInfo.exit:
                 connection.end();
@@ -149,7 +159,7 @@ function viewAllRoles(){
     connection.query(query, (err, res) => {
         if(err) throw err;
         console.log('\n');
-        console.log('VIEW EMPLOYEE BY MANAGER');
+        console.log('VIEW ALL ROLES');
         console.log('\n');
         console.table(res);9
         prompt();
@@ -311,12 +321,6 @@ async function updateEmployeeRole(){
     });
 }
 
-
-// Update the employee's Manager
-function updateEmployeeManager(){
-
-}
-
 // Prompt the user for a new employees name
 // that they want to search the database for
 // that specified employee
@@ -333,4 +337,32 @@ function askForName(){
             message: "Enter the last name: "
         }
     ]);
+}
+
+function addDepartment(){
+    inquirer.prompt([{
+        name: "name",
+        type: "input",
+        message:"What is the name of the department?",
+        validate:function(value){
+            if(isNaN(value) === false){
+                return false;
+            }
+            return true;
+        }
+    }]).then(function(answer){
+        connection.query(`INSERT INTO department SET ?`,
+        {
+            name: answer.name
+        },
+        function (err){
+            if (err) throw err;
+            console.log = "Department has been added."
+        });
+        prompt();
+    });
+}
+
+function addRole(){
+
 }

@@ -364,26 +364,26 @@ function addDepartment(){
 }
 
 function addRole(){
-inquirer.prompt({
-    name: "title",
-    type: "input",
-    message: "What is the title of this role?",
-    validate:function(value){
-        if(isNaN(value) === false){
-            return false;
+    inquirer.prompt({
+        name: "title",
+        type: "input",
+        message: "What is the title of this role?",
+        validate:function(value){
+            if(isNaN(value) === false){
+                return false;
+            }
+            return true;
         }
-        return true;
-    }
-}).then(function(answer){
-    connection.query(` INSERT role INTO SET ?`,{
-        title: "answer.title",
-        salary: "answer.salary",
-        department_id: "answer.department_id"
-    },
-    function (err){
-        if (err) throw err;
-        console.log = "Role has been added."
+    }).then(function(answer){
+        connection.query(` INSERT role INTO SET ?`,{
+            title: "answer.title",
+            salary: "answer.salary",
+            department_id: "answer.department_id"
+        },
+        function (err){
+            if (err) throw err;
+            console.log = "Role has been added."
+        });
+        prompt();
     });
-    prompt();
-});
 }

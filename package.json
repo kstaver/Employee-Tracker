@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/kstaver/Employee-Tracker#readme",
   "dependencies": {
+    "inquirer": "^8.2.0",
     "mysql2": "^2.3.2"
   }
 }

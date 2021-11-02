@@ -26,7 +26,8 @@ const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: "",
-    databse: 'employees'
+    databse: 'employees',
+    port: 3307
 });
 
 // Tests the connection between index.js and sql

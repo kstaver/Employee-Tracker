@@ -25,7 +25,7 @@ const promptForInfo = {
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: "crazycatlady",
+    password: "",
     databse: 'employees'
 });
 

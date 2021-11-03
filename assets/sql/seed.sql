@@ -1,11 +1,11 @@
 INSERT INTO department(name)
-VALUES
+VALUE
     ('Engineering'),
     ('Quality Assurance'),
     ('Network Engineering'),
     ('Executive');
 INSERT INTO role (title, salary, department_id)
-VALUES
+VALUE
     ('Lead Engineer', 200000, 1),
     ('Engineer', 150000, 1),
     ('Quality Assurance Lead', 100000, 2),
@@ -15,13 +15,13 @@ VALUES
     ('CISO', 250000, 4),
     ('Director of Information Security', 200000, 4);
 INSERT INTO manager(full_name)
-VALUES
+VALUE
   ('Henrietta Crabgrass'),
   ('Hendrick Crabgrass'),
   ('Hendersun Crabgrass'),
   ('Henderson Crabgrass');
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES
+VALUE
     (Henrietta, Crabgrass, 1, NULL)
     (Henry, Crabgrass, 2, 1)
     (Hendrick, Crabgrass, 3, NULL)

@@ -23,17 +23,19 @@ const promptForInfo = {
 // Create a connection to the sql database 
 // that we are using in this application
 const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'password',
-    databse: 'employees',
-    port: 3300
+    host: "localhost",
+    port: 3306,
+    user: "root",
+    password: "password",
+    databse: "employees"
 });
 
 // Tests the connection between index.js and sql
 // server
 connection.connect(err => {
-    if(err) throw err;
+    if(err){
+        throw err;
+    }
     prompt();
 });
 

@@ -25,9 +25,9 @@ const promptForInfo = {
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: "",
+    password: 'password',
     databse: 'employees',
-    port: 3307
+    port: 3300
 });
 
 // Tests the connection between index.js and sql

@@ -1,103 +1,9 @@
 'use strict';
 
-const mysql = require('mysql');
 const inquirer = require('inquirer');
+const mysql = require('mysql');
 const { async } = require('rxjs');
 require('console.table');
-
-// Prompts for user choice
-const promptForInfo = {
-    viewAllEmployees: "View all employees",
-    viewByDepartment: "View all employees by department",
-    viewByManager: "View all employees under a specific manager",
-    addEmployee: "Add an employee",
-    removeEmployee: "Remove an employee",
-    updateEmployeeRole: "Update employee role",
-    updateEmployeeManager: "Update an employee's manager",
-    viewAllRoles: "View all roles",
-    addRole: "Add a role",
-    addDepartment: "Add a department",
-    exit: "Exit"
-};
-
-// Create a connection to the sql database 
-// that we are using in this application
-const connection = mysql.createConnection({
-    host: "localhost",
-    port: 3306,
-    user: "root",
-    password: "password",
-    databse: "employees"
-});
-
-// Tests the connection between index.js and sql
-// server
-connection.connect(err => {
-    if(err){
-        throw err;
-    }
-    prompt();
-});
-
-// Prompt for user input
-function prompt(){
-    inquirer.prompt({
-        name: 'action',
-        type: 'list',
-        message: "Welcome to the Employees Database. Please choose from the following options.",
-        choices: [
-            promptForInfo.viewAllEmployees,
-            promptForInfo.viewByDepartment,
-            promptForInfo.viewByManager,
-            promptForInfo.viewAllRoles,
-            promptForInfo.addEmployee,
-            promptForInfo.removeEmployee,
-            promptForInfo.updateEmployeeRole,
-            promptForInfo.updateEmployeeManager,
-            promptForInfo.addRole,
-            promptForInfo.addDepartment,
-            promptForInfo.exit
-        ]
-    })
-    .then(answer =>{
-        console.log('answer', answer);
-        switch(answer.action){
-            case promptForInfo.viewAllEmployees:
-                viewAllEmployees();
-                break;
-            case promptForInfo.viewByDepartment:
-                viewByDepartment();
-                break;
-            case promptForInfo.viewByManager:
-                viewByManager();
-                break;
-            case promptForInfo.viewAllRoles:
-                viewAllRoles();
-                break;
-            case promptForInfo.addEmployee:
-                addEmployee();
-                break;
-            case promptForInfo.removeEmployee:
-                removeEmployee();
-                break;
-            case promptForInfo.updateEmployeeRole:
-                updateEmployeeRole();
-                break;
-            case promptForInfo.updateEmployeeManager:
-                updateEmployeeManager();
-                break;
-            case promptForInfo.addRole:
-                addRole();
-                break;
-            case promptForInfo.addDepartment:
-                addDepartment();
-                break;
-            case promptForInfo.exit:
-                connection.end();
-                break;
-        }
-    });
-}
 
 // View all employees option
 function viewAllEmployees(){
@@ -169,72 +75,6 @@ function viewAllRoles(){
     });
 }
 
-// Add an employee to the database
-async function addEmployee(){
-    const addName = await inquirer.prompt(askForName());
-    connection.query(`SELECT role.id, role.title FROM role ORDER BY role.id;`, async (err, res) => {
-        if (err) throw err;
-        const {role} = await inquirer.prompt([
-            {
-                name: 'role',
-                type: 'list',
-                choices: () => res.map(res => res.title),
-                message: "What is the employee's role? "
-            }
-        ]);
-        let roleId;
-        for (const row of res){
-            if(row.title === role){
-                roleId = row.id;
-                continue;
-            }
-        }
-        connection.query(`SELECT * FROM employee`, async (err, res) => {
-            if (err) throw err;
-            let choices = res.map(res => `${res.first_name} ${res.last_name}`);
-            choices.push('none');
-            let { manager } = await inquirer.prompt([
-                {
-                    name: 'manager',
-                    type: 'list',
-                    choices: choices,
-                    message: 'Choose the Manager of the employee: '
-                }
-            ]);
-            let managerId;
-            let managerName;
-            if (manager === 'none'){
-                managerId = null;
-            }else{
-                for (const data of res){
-                    data.fullName = `${data.first_name} ${data.last_name}`;
-                    if (data.fullName === manager){
-                        managerId = data.id;
-                        managerName = data.fullName;
-                        console.log(managerId);
-                        console.log(managerName);
-                        continue;
-                    }
-                }
-            }
-            console.log('Employee has been added. Please view all employee to verify...');
-            connection.query(
-                `INSERT INTO employee SET ?`,
-                {
-                    first_name: addName.first,
-                    last_name: addName.last,
-                    role_id: roleId,
-                    manager_id: parseInt(managerId)
-                },
-                (err, res) => {
-                    if (err) throw err;
-                    prompt();
-                }
-            );
-        });
-    });
-}
-
 // Ask if user wants to remove an employee, update a role, or view all employees
 // If yes to any of those, call the appropriate functions
 function remove(input){
@@ -293,37 +133,6 @@ function askForID(){
     ]);
 };
 
-// Update an employee's role
-async function updateEmployeeRole(){
-    const employeeId = await inquirer.prompt(askForID());
-
-    connection.query(`SELECT role.id, role.title FROM role ORDER BY role.id;`, async (err, res) => {
-        if (err) throw err;
-        const { role } = await inquirer.prompt([
-            {
-                name: 'role',
-                type: 'list',
-                choices: () => res.map(res => res.title),
-                message: "What is the new employee's role? "
-            }
-        ]);
-        let roleId;
-        for (const row of res) {
-            if (row.title === role){
-                roleId = row.id;
-                continue;
-            }
-        }
-        connection.query(`UPDATE employee
-        SET role_id = ${roleId}
-        WHERE employee.id = ${employeeId.name}`, async (err, res) => {
-            if (err) throw (err);
-            console.log('Role has been updated!')
-            prompt();
-        });
-    });
-}
-
 // Prompt the user for a new employees name
 // that they want to search the database for
 // that specified employee
@@ -342,52 +151,4 @@ function askForName(){
     ]);
 }
 
-function addDepartment(){
-    inquirer.prompt([{
-        name: "name",
-        type: "input",
-        message:"What is the name of the department?",
-        validate:function(value){
-            if(isNaN(value) === false){
-                return false;
-            }
-            return true;
-        }
-    }]).then(function(answer){
-        connection.query(`INSERT INTO department SET ?`,
-        {
-            name: answer.name
-        },
-        function (err){
-            if (err) throw err;
-            console.log = "Department has been added."
-        });
-        prompt();
-    });
-}
-
-function addRole(){
-    inquirer.prompt({
-        name: "title",
-        type: "input",
-        message: "What is the title of this role?",
-        validate:function(value){
-            if(isNaN(value) === false){
-                return false;
-            }
-            return true;
-        }
-    }).then(function(answer){
-        connection.query(` INSERT role INTO SET ?`,{
-            title: "answer.title",
-            salary: "answer.salary",
-            department_id: "answer.department_id"
-        },
-        function (err){
-            if (err) throw err;
-            console.log = "Role has been added."
-        });
-        prompt();
-    });
-}
 

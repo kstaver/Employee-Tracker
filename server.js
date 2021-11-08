@@ -22,4 +22,4 @@ console.log(`
 ++++++++++++++++++++++++
 `);
 
-connectUtil.prompt();
+connectUtil.userChoice();

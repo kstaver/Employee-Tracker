@@ -265,7 +265,7 @@ async function updateEmployee(){
                     continue;
                 }
             }
-            connection.query(`SELECT * FROM employee`, (err, res) =>{
+            connection.query(`SELECT * FROM employee`, async (err, res) =>{
                 if(err) throw err;
                 let choices = res.map(res => `${res.first_name} ${res.last_name}`);
                 choices.push('none');

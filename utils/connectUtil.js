@@ -1,11 +1,12 @@
 const mysql = require('mysql2');
 const cTable = require('console.table');
 const inquirer = require('inquirer');
+const {async} = require('rxjs');
 
 const db = mysql.createPool({
     host: 'localhost',
     user: 'root',
-    password: 'new-password',
+    password: 'password',
     database: 'techBusiness',
     waitForConnections: true,
     connectionLimit: 10,

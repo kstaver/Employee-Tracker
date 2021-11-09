@@ -1,17 +1,13 @@
 const mysql = require('mysql2');
 const cTable = require('console.table');
 const inquirer = require('inquirer');
-const {async} = require('rxjs');
 
-const db = mysql.createPool({
+const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: 'password',
-    database: 'techBusiness',
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0
-});
+    database: 'techBusiness'
+  });
 
 const promptForInfo = {
     viewAllEmployees: "View all employees",

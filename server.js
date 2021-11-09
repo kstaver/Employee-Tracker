@@ -5,7 +5,7 @@ const connectUtil = require('./utils/connectUtil');
 
 
 // Create a connection to employees.sql 
-const db = mysql.createPool({
+/*const db = mysql.createPool({
     host: "localhost",
     user: "root",
     password: "password",
@@ -13,7 +13,7 @@ const db = mysql.createPool({
     waitForConnections:true,
     connectionLimit:10,
     queueLimit:0
-});
+});*/
 
 console.log(`
 ++++++++++++++++++++++++

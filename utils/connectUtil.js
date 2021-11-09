@@ -1,11 +1,11 @@
-const mysql = require('mysql2/promise');
+const mysql = require('mysql2');
 const cTable = require('console.table');
 const inquirer = require('inquirer');
 
 const db = mysql.createPool({
     host: 'localhost',
     user: 'root',
-    password: '',
+    password: 'new-password',
     database: 'techBusiness',
     waitForConnections: true,
     connectionLimit: 10,
@@ -70,7 +70,7 @@ async function userChoice(){
                 addDepartment();
                 break;
             case promptForInfo.exit:
-                connection.end();
+                db.end();
                 break;
         }
     });
@@ -85,7 +85,7 @@ async function viewAllEmployees(){
     INNER JOIN role ON (role.id = employee.role_id)
     INNER JOIN department ON (department.id = role.department_id)
     ORDER BY employee.id;`;
-    connection.query(query, (err, res) => {
+    db.query(query, (err, res) => {
         if(err) throw err;
         console.log('\n');
         console.log('VIEW ALL EMPLOYEES');
@@ -102,7 +102,7 @@ async function viewAllDepartment(){
     LEFT JOIN role ON (role.id = employee.role.id)
     LEFT JOIN department ON (department.id = role.department_id)
     ORDER BY department.name;`;
-    connection.query(query, (err, res) => {
+    db.query(query, (err, res) => {
         if(err) throw err;
         console.log('\n');
         console.log('VIEW EMPLOYEE BY DEPARTMENT');
@@ -119,7 +119,7 @@ async function viewAllRoles(){
     LEFT JOIN role ON (role.id = employee.role_id)
     LEFT JOIN department ON (department.id = role.department_id)
     ORDER BY role.title;`;
-    connection.query(query, (err, res) => {
+    db.query(query, (err, res) => {
         if(err) throw err;
         console.log('\n');
         console.log('VIEW ALL ROLES');
@@ -159,7 +159,7 @@ async function askForName(){
     .then((answer) => {
         const sqlName = (`INSERT INTO employee
         SET first_name = "${answer.first_name}", last_name = "${answer.last_name}"`);
-        connection.query(sqlName, (err, res) => {
+        db.query(sqlName, (err, res) => {
             if(err) throw err;
             console.log(`\n${answer.first_name} ${answer.last_name} has been added to the database.`);
             userChoice();
@@ -169,7 +169,7 @@ async function askForName(){
 
 async function addEmployee(){
     const addName = await inquirer.prompt(askForName());
-    connection.query(`SELECT role.id, role.title FROM role ORDER BY role.id;`, async (err, res) => {
+    db.query(`SELECT role.id, role.title FROM role ORDER BY role.id;`, async (err, res) => {
         if (err) throw err;
         const {role} = await inquirer.prompt([
             {
@@ -186,7 +186,7 @@ async function addEmployee(){
                 continue;
             }
         }
-        connection.query(`SELECT * FROM employee`, async (err, res) => {
+        db.query(`SELECT * FROM employee`, async (err, res) => {
             if (err) throw err;
             let choices = res.map(res => `${res.first_name} ${res.last_name}`);
             choices.push('none');
@@ -215,7 +215,7 @@ async function addEmployee(){
                 }
             }
             console.log('Employee has been added. Please view all employee to verify...');
-            connection.query(
+            db.query(
                 `INSERT INTO employee SET ?`,
                 {
                     first_name: addName.first,
@@ -233,7 +233,7 @@ async function addEmployee(){
 }
 
 async function updateEmployee(){
-    connection.query(`SELECT employee.id, employee.first_name, employee.last_name FROM employee ORDER BY employee.id;`, async (err, res) => {
+    db.query(`SELECT employee.id, employee.first_name, employee.last_name FROM employee ORDER BY employee.id;`, async (err, res) => {
 
         if (err) throw err;
         const {employee} = await inquirer.prompt([
@@ -251,7 +251,7 @@ async function updateEmployee(){
                 continue;
             }
         }
-        connection.query(`SELECT role.id, role.title FROM role ORDER BY role.id;`, async (err, res) => {
+        db.query(`SELECT role.id, role.title FROM role ORDER BY role.id;`, async (err, res) => {
             if (err) throw err;
             const {role} = await inquirer.prompt([
                 {
@@ -265,7 +265,7 @@ async function updateEmployee(){
                     continue;
                 }
             }
-            connection.query(`SELECT * FROM employee`, async (err, res) =>{
+            db.query(`SELECT * FROM employee`, async (err, res) =>{
                 if(err) throw err;
                 let choices = res.map(res => `${res.first_name} ${res.last_name}`);
                 choices.push('none');
@@ -342,7 +342,7 @@ async function addRole(){
         department_id = (SELECT id FROM department 
         WHERE name = "${answer.department_name}")`);
 
-        connection.query(sqlRole, (err,res) => {
+        db.query(sqlRole, (err,res) => {
             if (err) throw err;
             console.log = "Role has been added.";
         });
@@ -361,7 +361,7 @@ async function addDepartment(){
         const sqlDepartment = (`INSERT INTO department
         SET name = "${answer.name}"`);
 
-        connection.query(sqlDepartment, (err, res) => {
+        db.query(sqlDepartment, (err, res) => {
             if(err) throw err;
             console.log = "Department has been added.";
         });
@@ -399,7 +399,7 @@ async function removeEmployee(){
         type: "input",
         message: "Enter the ID of the employee that you want to remove: "
     }]);
-    connection.query(`DELETE FROM employee WHERE ?`,
+    db.query(`DELETE FROM employee WHERE ?`,
         {
             id: answer.first
         },

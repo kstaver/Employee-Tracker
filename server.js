@@ -1,6 +1,5 @@
 // Non async functions
 const inqurier = require('inquivier');
-const mysql = reuire("mysql2");
-const{} = requires();
-
-
+const mysql = require("mysql2");
+const{ viewEmployees, getAllManagers, addEmployee, 
+    addDepartment, addRole, updateEmployee } = require("./inquries");

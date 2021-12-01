@@ -15,6 +15,8 @@ const init = () => {
     }
 };
 
+// Main Menu which deisplays a list of options for a user to choose from
+// and calls the appropriate function for each chocie
 const mainMenu = async () => {
     try{
         const choices = await inquirer.prompt({

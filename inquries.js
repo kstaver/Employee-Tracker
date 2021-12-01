@@ -6,7 +6,6 @@ const inquirer = require('inquirer');
 // View all employees
 async function viewEmployees(table){
 
-
 }
 
 // View all managers

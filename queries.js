@@ -104,28 +104,103 @@ async function addEmployee(table){
                     return results.map(({f_name, l_name, id}) => ({
                         name: `${f_name} ${l_name}`,
                         value: id,
-                }));
+                    }));
+                },
             },
         ]);
         try {
-
+            const sql = `INSERT INTO ${table} (f_name, l_name, role_id, manager_id) 
+            VALUES ("${data.f_name}", "${data.l_name}", "${data.role}", ${data.manager})`;
+            const results = await db.promise().execute(sql);
+            console.log("Employee added successfully!");
+            return true;
+        }catch(err){
+            console.error(err);
         }
-        catch(err){
-
-        }
+    } catch (err){
+        console.error(err);
     }
 }
 
 // Add a department
 async function addDepartment(table){
-    try{ } catch (err){
-        console.error(err);
+    try{
+        const newDept = await inquirer.prompt(
+            {
+                type: "input",
+                name: "new_dept",
+                message: "What is the new depatment's name?",
+                validate: (new_dept) =>{
+                    if(new_dept){
+                        return true;
+                    }else{m
+                        console.log("Please enter the new department's name.");
+                        return false;
+                    }
+                }
+            });
+        const sql = `INSERT INTO ${table} (department_name) VALUES ("${newDept.new_dept}")`;
+        const results = await db.promise().execute(sql);
+        console.log("Department added successfully!");
+        return true;
+    } catch (err){
+        console.log(err);
     }
 }
 
 // Add a role
 async function addRole(table){
-    try{ } catch (err){
+    try{
+        const data = await inquirer.prompt([
+            {
+                type: "input",
+                name: "new_role",
+                message: "What is the new role's name?",
+                validate: (new_role) =>{
+                    if(new_role){
+                        return true;
+                    }else{
+                        console.log("Please enter the new role's name.");
+                        return false;
+                    }
+                },
+            },
+            {
+                type: "input",
+                name: "salary",
+                message: "What is the new role's salary?",
+                validate: (salary) =>{
+                    if(!isNaN(salary)){
+                        return true;
+                    }else {
+                        console.log("Please enter the new role's salary.");
+                        return false;
+                    }
+                }
+            },
+            {
+                type: "list",
+                name: "department",
+                message: "What is the department of this role?",
+                choices: async function (){
+                    const results = await viewQuery("department");
+                    return results.map(({department_name, id}) => ({
+                        name: department_name,
+                        value: id,
+                    }));
+                },
+            },
+        ]);
+        const sql = `INSERT INTO ${table} (role_name, salray, department_id) 
+        VALUES ('${data.new_role}', ${data.salaray}, ${data.department})`;
+        try {
+            const results = await db.promise().execute(sql);
+            console.log("New role has been added to Role's table");
+            return true;
+        } catch (err) {
+            console.error(err);
+        }
+    }catch (err){
         console.error(err);
     }
 }

@@ -207,8 +207,43 @@ async function addRole(table){
 
 // Update an employee
 async function updateEmployee(updateValue){
-    try{ } catch (err){
-        console.error(err);
+    try {
+        const data = await inquirer.prompt([
+          {
+            type: "list",
+            name: "employee_selection",
+            message: "What employee do you want to update?",
+            choices: async function () {
+              const results = await viewEmployees("employee");
+              return results.map(({ f_name, l_name, id }) => ({
+                name: `${f_name} ${l_name}`,
+                value: id,
+              }));
+            },
+          },
+          {
+            type: "list",
+            name: "new_role",
+            message: "What is the new role of this employee?",
+            choices: async function () {
+              const results = await viewRoles("role");
+              return results.map(({ role_name, id }) => ({
+                name: role_name,
+                value: id,
+              }));
+            },
+          },
+        ]);
+        try {
+          const sql = `UPDATE employee SET role_id = ${data.new_role} WHERE id = ${data.employee_selection}`;
+          const results = await db.promise().execute(sql);
+          console.log("Employee information has been updated");
+          return true;
+        } catch (err) {
+          console.error(err);
+        }
+    } catch (err) {
+    console.error(err);
     }
 }
 

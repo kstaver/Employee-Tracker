@@ -129,7 +129,7 @@ async function addDepartment(table){
             {
                 type: "input",
                 name: "new_dept",
-                message: "What is the new depatment's name?",
+                message: "What is the new department's name?",
                 validate: (new_dept) =>{
                     if(new_dept){
                         return true;

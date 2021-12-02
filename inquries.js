@@ -5,12 +5,44 @@ const inquirer = require('inquirer');
 
 // View all employees
 async function viewEmployees(table){
+    let sql = `SELECT SELECT e.id, e.first_name, e.last_name, role_name, department_name, 
+    salary, manager.first_name manager FROM ${table} e 
+    LEFT JOIN roles r ON e.role_id = r.id 
+    LEFT JOIN department ON role.department_id = department.id 
+    LEFT JOIN employee manager ON e.manager_id = manager.id`;
+    try{
+        const results = await db.promise().execute(sql);
+        return results[0];
+    }catch (err){
+        console.error(err);
+    }
+}
 
+// View all departments
+async function viewDepartments(table){
+    let sql = `SELECT * FROM ${table}`;
+    try{
+        const results = await db.promise().execute(sql);
+        return results[0];
+    }catch (err){
+        console.error(err);
+    }
+}
+
+// View all roles
+async function viewRoles(table){
+    let sql = `SELECT role_name, role.id, department_name, salary 
+    FROM ${table} INNER JOIN department ON ${table}.department_id = department.id`;
+    try{
+        const results = await db.promise().execute(sql);
+        return results[0];
+    }catch (err){
+        console.error(err);
+    }
 }
 
 // View all managers
 async function getAllManagers(){
-
 }
 
 // Add an employee
@@ -33,4 +65,4 @@ async function updateEmployee(updateValue){
 
 }
 
-module.exports = { viewEmployees, getAllManagers, addEmployee, addDepartment, addRole, updateEmployee };
+module.exports = { viewEmployees, viewDepartments, viewRoles, getAllManagers, addEmployee, addDepartment, addRole, updateEmployee };

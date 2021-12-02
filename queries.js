@@ -45,7 +45,7 @@ async function viewRoles(table){
 // View all managers
 async function getAllManagers(){
     try{
-        const sql = `SELECT * FROM employee WHERE manager_id is NULL`;
+        const sql = `SELECT * FROM employee WHERE manager_id IS NULL`;
         const results = await db.promise().execte(sql);
         return results[0];
     }catch (err){

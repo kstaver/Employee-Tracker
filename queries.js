@@ -26,6 +26,7 @@ async function viewDepartments(table){
         return results[0];
     }catch (err){
         console.error(err);
+
     }
 }
 
@@ -58,20 +59,60 @@ async function addEmployee(table){
         const data = await inquirer.prompt([
             {
                 type: "input",
-                f_name: "first_name",
-                message: "What is the employee's first namer",
-                validate: (f_name){
+                name: f_name,
+                message: "What is the employee's first name?",
+                validate: (f_name) =>{
                     if(f_name){
                         return true;
                     }else{
-                        console.log("Please enter the new employee's first name.");
+                        console.log("Please enter the employee's first name.");
                         return false;
                     }
+                }
+            },
+            {
+                type: "input",
+                name: "l_name",
+                message: "What is the employee's last name?",
+                validate: (l_name) =>{
+                    if(l_name){
+                        return true;
+                    }else{
+                        console.log("Please enter the employee's last name.");
+                        return false;
+                    }
+                }
+            },
+            {
+                type: "list",
+                name: "role",
+                message: "What is the employee's role?",
+                choices: async function(){
+                    const results = await viewQuery("role");
+                    return results.map(({role_name, id}) => ({
+                        name: role_name,
+                        value: id,
+                    }));
                 },
             },
-        ])
-     } catch (err){
-        console.error(err);
+            {
+                type: "list",
+                name: "manager",
+                message: "Who is the employee's manager?",
+                choices: async function(){
+                    const results = await getAllManagers();
+                    return results.map(({f_name, l_name, id}) => ({
+                        name: `${f_name} ${l_name}`,
+                        value: id,
+                }));
+            },
+        ]);
+        try {
+
+        }
+        catch(err){
+
+        }
     }
 }
 

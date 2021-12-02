@@ -54,7 +54,23 @@ async function getAllManagers(){
 
 // Add an employee
 async function addEmployee(table){
-    try{ } catch (err){
+    try{
+        const data = await inquirer.prompt([
+            {
+                type: "input",
+                f_name: "first_name",
+                message: "What is the employee's first namer",
+                validate: (f_name){
+                    if(f_name){
+                        return true;
+                    }else{
+                        console.log("Please enter the new employee's first name.");
+                        return false;
+                    }
+                },
+            },
+        ])
+     } catch (err){
         console.error(err);
     }
 }

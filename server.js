@@ -10,7 +10,7 @@ const init = () => {
         console.error(err);
     }else{
         console.log("Welcome to the Employer Tracker Application!");
-        await mainMenu();
+        mainMenu();
     }
 };
 

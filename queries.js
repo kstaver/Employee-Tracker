@@ -43,26 +43,41 @@ async function viewRoles(table){
 
 // View all managers
 async function getAllManagers(){
+    try{
+        const sql = `SELECT * FROM employee WHERE manager_id is NULL`;
+        const results = await db.promise().execte(sql);
+        return results[0];
+    }catch (err){
+        console.error(err);
+    }
 }
 
 // Add an employee
 async function addEmployee(table){
-
+    try{ } catch (err){
+        console.error(err);
+    }
 }
 
 // Add a department
 async function addDepartment(table){
-
+    try{ } catch (err){
+        console.error(err);
+    }
 }
 
 // Add a role
 async function addRole(table){
-
+    try{ } catch (err){
+        console.error(err);
+    }
 }
 
 // Update an employee
 async function updateEmployee(updateValue){
-
+    try{ } catch (err){
+        console.error(err);
+    }
 }
 
 module.exports = { viewEmployees, viewDepartments, viewRoles, getAllManagers, addEmployee, addDepartment, addRole, updateEmployee };

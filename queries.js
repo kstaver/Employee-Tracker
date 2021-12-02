@@ -1,5 +1,5 @@
 // For async functions
-const db = require('./db');
+const db = require('./util/connect');
 const cTable = require('console.table');
 const inquirer = require('inquirer');
 

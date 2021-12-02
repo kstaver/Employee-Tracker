@@ -26,7 +26,7 @@ const mainMenu = async () => {
                 "View all employees",
                 "View all departments",
                 "View all roles",
-                "View all Managers",
+                "View all managers",
                 new inquirer.Separator(),
                 "Add an employee",
                 "Add a department",

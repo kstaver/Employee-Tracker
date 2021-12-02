@@ -1,8 +1,7 @@
 // Non async functions
 const inquirer = require('inquirer');
-const inqurier = require('inquivier');
 const mysql = require("mysql2");
-const{ viewEmployees, getAllManagers, addEmployee, 
+const{ viewEmployees, viewDepartments, viewRoles, getAllManagers, addEmployee, 
     addDepartment, addRole, updateEmployee } = require("./inquries");
 
 // Initialize main menu and disaply a title message
@@ -50,25 +49,31 @@ const mainMenu = async () => {
             switch (choices.options){
                 case "View all employees":{
                     table = "employee";
+                    const results = await viewEmployees(table);
+                    console.table(results);
                     break;
                 }
                 case "View all department":{
                     table = "department";
+                    const results = await viewDepartments(table);
+                    console.table(results);
                     break;
                 }
                 case "View all roles":{
                     table = "role";
+                    const results = await viewRoles(table);
+                    console.table(results);
                     break;
                 }
                 case "View all Managers":{
                     table = "manager";
+                    const results = await getAllManagers(table);
+                    console.table(results);
                 }
                 default:{
                     throw new Error("Invalid choice");
                 }
         }
-        const results = await viewEmployees(table);
-        console.table(results);
         await mainMenu();
         } else if (
             choices.options === "Add an employee" ||
@@ -78,24 +83,27 @@ const mainMenu = async () => {
             let table;
             switch (choices.options){
                 case "Add an employee":{
-                    table = addEmployee();
+                    table = "employee";
+                    const results = await addEmployee(table);
+                    console.table(results);
                     break;
                 }
                 case "Add a department":{
-                    table = addDepartment();
+                    table = "department";
+                    const results = await addDepartment(table);
+                    console.table(results);
                     break;
                 }
                 case "Add a role":{
-                    table = addRole();
+                    table = "role";
+                    const results = await addRole(table);
+                    console.table(results);
                     break;
                 }
                 default:{
                     throw new Error("Invalid choice.");
                 }
             }
-            await addEmployee(table);
-            await addDepartment(table);
-            await addRole(table);
             await mainMenu();
         } else if (choices.options === "Update an employee"){
             let updateValue = "employee";

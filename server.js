@@ -2,7 +2,7 @@
 const inquirer = require('inquirer');
 const mysql = require("mysql2");
 const{ viewEmployees, viewDepartments, viewRoles, getAllManagers, addEmployee, 
-    addDepartment, addRole, updateEmployee } = require("./inquries");
+    addDepartment, addRole, updateEmployee } = require("./queries");
 
 // Initialize main menu and disaply a title message
 const init = () => {

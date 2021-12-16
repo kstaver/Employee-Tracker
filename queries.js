@@ -3,6 +3,43 @@ const db = require('./util/connect');
 const cTable = require('console.table');
 const inquirer = require('inquirer');
 
+async function viewAll(table){
+    let sql;
+    if(table === "employee"){
+        sql = `SELECT e.id, e.first_name, e.last_name, role_name, department_name, 
+        salary, manager.first_name manager FROM ${table} e 
+        LEFT JOIN roles r ON e.role_id = r.id 
+        LEFT JOIN department ON role.department_id = department.id 
+        LEFT JOIN employee manager ON e.manager_id = manager.id`;
+    }else if(table === "department"){
+        sql = `SELECT * FROM ${table}`;
+    }else if(table === "role"){
+        sql = `SELECT role_name, role.id, department_name, salaray FROM ${table}
+        INNER JOIN department ON ${table}.department_id = department.id`
+    }
+    try{
+        const results = await db.promise().execute(sql);
+        return results[0];
+    }catch (err){
+        console.error(err);
+    }
+}
+
+// View all managers
+async function getManagers(){
+    try{
+        const sql = `SELECT * FROM employee WHERE manager_id IS NULL`;
+        const results = await db.promise().execte(sql);
+        return results[0];
+    }catch (err){
+        console.error(err);
+    }
+}
+
+async function addAll(table){
+    try{}
+}
+/*
 // View all employees
 async function viewEmployees(table){
     let sql = `SELECT SELECT e.id, e.first_name, e.last_name, role_name, department_name, 
@@ -42,16 +79,7 @@ async function viewRoles(table){
     }
 }
 
-// View all managers
-async function getAllManagers(){
-    try{
-        const sql = `SELECT * FROM employee WHERE manager_id IS NULL`;
-        const results = await db.promise().execte(sql);
-        return results[0];
-    }catch (err){
-        console.error(err);
-    }
-}
+
 
 // Add an employee
 async function addEmployee(table){
@@ -245,6 +273,5 @@ async function updateEmployee(updateValue){
     } catch (err) {
     console.error(err);
     }
-}
-
-module.exports = { viewEmployees, viewDepartments, viewRoles, getAllManagers, addEmployee, addDepartment, addRole, updateEmployee };
+}*/
+module.exports = { viewAll, getManagers, addAll, updateEmployee };

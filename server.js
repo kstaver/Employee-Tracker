@@ -1,17 +1,20 @@
 // Non async functions
+const figlet = require('figlet');
 const inquirer = require('inquirer');
 const mysql = require("mysql2");
 const{ viewEmployees, viewDepartments, viewRoles, getAllManagers, addEmployee, 
     addDepartment, addRole, updateEmployee } = require("./queries");
 
-// Initialize main menu and disaply a title message
+// Initialize main menu and displays a title message
 const init = () => {
-    if (err){
-        console.error(err);
-    }else{
-        console.log("Welcome to the Employer Tracker Application!");
-        mainMenu();
-    }
+    figlet("Welcome to the Employer Tracker Application!", async (err, data) =>{
+        if(err){
+            console.log(err);
+        }else{
+            console.log(data);
+            await mainMenu();
+        }
+    });
 };
 
 // Main Menu which deisplays a list of options for a user to choose from

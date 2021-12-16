@@ -2,7 +2,7 @@
 const figlet = require('figlet');
 const inquirer = require('inquirer');
 const mysql = require("mysql2");
-const{ viewEmployees, viewDepartments, viewRoles, getAllManagers, addEmployee, 
+const{ viewEmployees, viewDepartments, viewRoles, getManagers, addEmployee, 
     addDepartment, addRole, updateEmployee } = require("./queries");
 
 // Initialize main menu and displays a title message
@@ -38,7 +38,7 @@ const mainMenu = async () => {
                 "Update an employee",
                 new inquirer.Separator(),
                 "Exit",
-                new inquirier.Separator("***End***")
+                new inquirer.Separator("***End***")
             ],
         });
         console.log('\n');
@@ -56,7 +56,7 @@ const mainMenu = async () => {
                     console.table(results);
                     break;
                 }
-                case "View all department":{
+                case "View all departments":{
                     table = "department";
                     const results = await viewDepartments(table);
                     console.table(results);
@@ -70,7 +70,7 @@ const mainMenu = async () => {
                 }
                 case "View all Managers":{
                     table = "manager";
-                    const results = await getAllManagers(table);
+                    const results = await getManagers(table);
                     console.table(results);
                 }
                 default:{
@@ -115,7 +115,7 @@ const mainMenu = async () => {
         } else if (choices.options === "Exit"){
             process.exit();
         }
-    } catch (e){
+    } catch (err){
         console.log(err);
     }
 };

@@ -1,10 +1,12 @@
-INSERT INTO department(department_name)
+USE techbusiness;
+
+INSERT INTO department(name)
 VALUES
     ('Engineering'),
     ('Quality Assurance'),
     ('Network Engineering'),
     ('Executive');
-INSERT INTO roles (role_name, salary, department_id)
+INSERT INTO roles (title, salary, department_id)
 VALUES
     ('Chief Engineer', 200000, 1),
     ('Engineer', 150000, 1),

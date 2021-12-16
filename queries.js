@@ -6,15 +6,15 @@ const inquirer = require('inquirer');
 async function viewAll(table){
     let sql;
     if(table === "employee"){
-        sql = `SELECT e.id, e.first_name, e.last_name, role_name, department_name, 
-        salary, manager.first_name manager FROM ${table} e 
-        LEFT JOIN roles r ON e.role_id = r.id 
-        LEFT JOIN department ON role.department_id = department.id 
-        LEFT JOIN employee manager ON e.manager_id = manager.id`;
+        sql = `SELECT employee.id, employee.first_name, employee.last_name, role.title, 
+        department_ name AS department, role.salary,
+        CONCAT(manager.first_name, ' ', manager.last_name) AS manager FROM employee 
+        LEFT JOIN role on employee.role_id = role.id LEFT JOIN department on role.department_id = department.id 
+        LEFT JOIN employee manager on manager.id = employee.manager_id;`;
     }else if(table === "department"){
         sql = `SELECT * FROM ${table}`;
     }else if(table === "role"){
-        sql = `SELECT role_name, role.id, department_name, salaray FROM ${table}
+        sql = `SELECT role.title, role.id, department_ name AS department, salaray FROM ${table}
         INNER JOIN department ON ${table}.department_id = department.id`
     }
     try{
@@ -36,17 +36,13 @@ async function getManagers(){
     }
 }
 
-async function addAll(table){
-    try{}
-}
-/*
 // View all employees
 async function viewEmployees(table){
-    let sql = `SELECT SELECT e.id, e.first_name, e.last_name, role_name, department_name, 
-    salary, manager.first_name manager FROM ${table} e 
-    LEFT JOIN roles r ON e.role_id = r.id 
+    let sql = `SELECT SELECT employee.id, employee.first_name, employee.last_name, role.title, department_name AS department, 
+    salary, manager.first_name manager FROM ${table} employee 
+    LEFT JOIN roles r ON employee.role_id = r.id 
     LEFT JOIN department ON role.department_id = department.id 
-    LEFT JOIN employee manager ON e.manager_id = manager.id`;
+    LEFT JOIN employee manager ON employee.manager_id = manager.id`;
     try{
         const results = await db.promise().execute(sql);
         return results[0];
@@ -69,7 +65,7 @@ async function viewDepartments(table){
 
 // View all roles
 async function viewRoles(table){
-    let sql = `SELECT role_name, role.id, department_name, salary 
+    let sql = `SELECT role.title, role.id, department_ name AS department, salary 
     FROM ${table} INNER JOIN department ON ${table}.department_id = department.id`;
     try{
         const results = await db.promise().execute(sql);
@@ -78,8 +74,6 @@ async function viewRoles(table){
         console.error(err);
     }
 }
-
-
 
 // Add an employee
 async function addEmployee(table){
@@ -117,8 +111,8 @@ async function addEmployee(table){
                 message: "What is the employee's role?",
                 choices: async function(){
                     const results = await viewQuery("role");
-                    return results.map(({role_name, id}) => ({
-                        name: role_name,
+                    return results.map(({title, id}) => ({
+                        name: title,
                         value: id,
                     }));
                 },
@@ -167,7 +161,7 @@ async function addDepartment(table){
                     }
                 }
             });
-        const sql = `INSERT INTO ${table} (department_name) VALUES ("${newDept.new_dept}")`;
+        const sql = `INSERT INTO ${table} (department_ name) VALUES ("${newDept.new_dept}")`;
         const results = await db.promise().execute(sql);
         console.log("Department added successfully!");
         return true;
@@ -219,7 +213,7 @@ async function addRole(table){
                 },
             },
         ]);
-        const sql = `INSERT INTO ${table} (role_name, salray, department_id) 
+        const sql = `INSERT INTO ${table} (role.title, salray, department_id) 
         VALUES ('${data.new_role}', ${data.salaray}, ${data.department})`;
         try {
             const results = await db.promise().execute(sql);
@@ -255,8 +249,8 @@ async function updateEmployee(updateValue){
             message: "What is the new role of this employee?",
             choices: async function () {
               const results = await viewRoles("role");
-              return results.map(({ role_name, id }) => ({
-                name: role_name,
+              return results.map(({ title, id }) => ({
+                name: title,
                 value: id,
               }));
             },
@@ -273,5 +267,5 @@ async function updateEmployee(updateValue){
     } catch (err) {
     console.error(err);
     }
-}*/
-module.exports = { viewAll, getManagers, addAll, updateEmployee };
+}
+module.exports = { viewAll, viewEmployees, viewRoles, viewDepartments, addEmployee, addRole, getManagers, addDepartment, updateEmployee };

@@ -69,9 +69,10 @@ const mainMenu = async () => {
                     break;
                 }
                 case "View all Managers":{
-                    table = "manager";
+                    table = "employee";
                     const results = await getManagers(table);
                     console.table(results);
+                    break;
                 }
                 default:{
                     throw new Error("Invalid choice");

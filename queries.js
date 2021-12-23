@@ -6,11 +6,12 @@ const inquirer = require('inquirer');
 async function viewAll(table){
     let sql;
     if(table === "employee"){
-        sql = `SELECT employee.id, employee.first_name, employee.last_name, role.title, 
-        department_ name AS department, role.salary,
-        CONCAT(manager.first_name, ' ', manager.last_name) AS manager FROM employee 
-        LEFT JOIN role on employee.role_id = role.id LEFT JOIN department on role.department_id = department.id 
-        LEFT JOIN employee manager on manager.id = employee.manager_id;`;
+        sql = 'SELECT * FROM employee';
+        // sql = `SELECT employee.id, employee.first_name, employee.last_name, role.title, 
+        // department_name AS department, role.salary,
+        // CONCAT(manager.first_name, ' ', manager.last_name) AS manager FROM employee 
+        // LEFT JOIN role on employee.role_id = role.id LEFT JOIN department on role.department_id = department.id 
+        // LEFT JOIN employee manager on manager.id = employee.manager_id;`;
     }else if(table === "department"){
         sql = `SELECT * FROM ${table}`;
     }else if(table === "role"){
@@ -28,8 +29,8 @@ async function viewAll(table){
 // View all managers
 async function getManagers(){
     try{
-        const sql = `SELECT * FROM employee WHERE manager_id IS NULL`;
-        const results = await db.promise().execte(sql);
+        const sql = `SELECT * FROM employee WHERE manager_id IS NOT NULL`;
+        const results = await db.promise().execute(sql);
         return results[0];
     }catch (err){
         console.error(err);
@@ -38,11 +39,7 @@ async function getManagers(){
 
 // View all employees
 async function viewEmployees(table){
-    let sql = `SELECT SELECT employee.id, employee.first_name, employee.last_name, role.title, department_name AS department, 
-    salary, manager.first_name manager FROM ${table} employee 
-    LEFT JOIN roles r ON employee.role_id = r.id 
-    LEFT JOIN department ON role.department_id = department.id 
-    LEFT JOIN employee manager ON employee.manager_id = manager.id`;
+    let sql = 'SELECT * FROM employee';
     try{
         const results = await db.promise().execute(sql);
         return results[0];
@@ -59,14 +56,12 @@ async function viewDepartments(table){
         return results[0];
     }catch (err){
         console.error(err);
-
     }
 }
 
 // View all roles
 async function viewRoles(table){
-    let sql = `SELECT role.title, role.id, department_ name AS department, salary 
-    FROM ${table} INNER JOIN department ON ${table}.department_id = department.id`;
+    let sql = `SELECT * FROM role`;
     try{
         const results = await db.promise().execute(sql);
         return results[0];

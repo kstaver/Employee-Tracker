@@ -18,11 +18,11 @@ VALUES
     ('Director of Information Security', 250000, 4);
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES
-    (Henrietta, Crabgrass, 1, NULL)
-    (Henry, Crabgrass, 2, 1)
-    (Hendrick, Crabgrass, 3, NULL)
-    (Henlea, Crabgrass, 4, 3)
-    (Hendersun, Crabgrass, 5, NULL)
-    (Hendrikje, Crabgrass, 6, 5)
-    (Henderson, Crabgrass, 7, NULL)
+    (Henrietta, Crabgrass, 1, NULL),
+    (Henry, Crabgrass, 2, 1),
+    (Hendrick, Crabgrass, 3, NULL),
+    (Henlea, Crabgrass, 4, 3),
+    (Hendersun, Crabgrass, 5, NULL),
+    (Hendrikje, Crabgrass, 6, 5),
+    (Henderson, Crabgrass, 7, NULL),
     (Henka, Crabgrass, 8, 7);

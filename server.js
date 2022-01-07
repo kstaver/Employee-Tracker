@@ -1,7 +1,7 @@
 // Non async functions
 const figlet = require('figlet');
 const inquirer = require('inquirer');
-const mysql = require("mysql2");
+const mysql = require('mysql2');
 const{ viewEmployees, viewDepartments, viewRoles, getManagers, addEmployee, 
     addDepartment, addRole, updateEmployee } = require("./queries");
 
